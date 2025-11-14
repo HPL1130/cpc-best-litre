@@ -1,7 +1,7 @@
 {
   "name": "中油自助最划算公升數",
   "short_name": "中油最划算",
-  "start_url": "/cpc-best-litre/",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#00664F",
   "theme_color": "#00664F",
