@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中油自助最划算公升數 Top20</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00664F">
+<style>
+:root{--c:#00664F;--g:#ffb300;--r:12px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Microsoft JhengHei",sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
+header{background:var(--c);color:#fff;padding:1rem;text-align:center}
+h1{font-size:1.4rem;margin:0}
+.container{max-width:1000px;margin:0 auto;padding:1rem}
+.controls{background:#fff;padding:1.2rem;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.1);margin-bottom:1rem;text-align:center}
+.controls select{font-size:1.1rem;padding:.7rem 1.2rem;border-radius:8px;border:1px solid #ddd;margin:0 .4rem}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1);font-size:.95rem;margin-top:.5rem}
+th{background:var(--c);color:#fff;padding:1rem .5rem}
+td{padding:.9rem .5rem;text-align:center}
+tr:nth-child(even){background:#fafafa}
+.best{background:#fff8e1!important;font-weight:bold}
+.oil92{color:#d32f2f}
+.oil95{color:#f57c00}
+.update{font-size:.8rem;color:#666;margin-top:1rem;text-align:center}
+footer{text-align:center;padding:2rem;color:#888;font-size:.9rem}
+@media(max-width:640px){
+  h1{font-size:1.3rem}
+  th,td{font-size:.88rem;padding:.6rem .2rem}
+  .controls select{width:90%;display:block;margin:.6rem auto}
+}
+</style>
+</head>
+<body>
+<header><h1>中油自助最划算公升數 Top20</h1></header>
+<div class="container">
+  <div class="controls">
+    <div id="date">正在抓取最新油價…</div><br>
+    92 自助優惠
+    <select id="d92">
+      <option value="1">1元</option>
+      <option value="2" selected>2元</option>
+      <option value="3">3元</option>
+      <option value="4">4元</option>
+    </select>
+    95 自助優惠
+    <select id="d95">
+      <option value="1">1元</option>
+      <option value="2" selected>2元</option>
+      <option value="3">3元</option>
+      <option value="4">4元</option>
+    </select>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>排名</th><th>油種</th><th>公升</th><th>原價</th><th>自助</th><th>優惠</th><th>實際單價</th><th>省</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+  <div class="update" id="last">最後更新：--</div>
+</div>
+<footer>資料來源：台灣中油官網｜每週一自動更新｜僅供參考</footer>
+
+<script>
+let p92=29.8,p95=31.1,date="";
+const tbody=document.getElementById("tbody");
+const dateEl=document.getElementById("date");
+const lastEl=document.getElementById("last");
+
+async function getPrice(){
+  try{
+    const r=await fetch("https://corsproxy.io/?https://www.cpc.com.tw/cp.aspx?n=38");
+    const t=await r.text();
+    const m=t.match(/牌價實施日期[\s\S]*?(\d{4}\/\d{1,2}\/\d{1,2})/);
+    if(m){date=m[1];dateEl.innerHTML=`牌價實施日期：<b>${date}</b>`;}
+    const doc=new DOMParser().parseFromString(t,"text/html");
+    const r92=doc.querySelector("table tbody tr:nth-child(2) td:nth-child(3)")?.textContent.trim();
+    const r95=doc.querySelector("table tbody tr:nth-child(3) td:nth-child(3)")?.textContent.trim();
+    if(r92)p92=parseFloat(r92);
+    if(r95)p95=parseFloat(r95);
+  }catch(e){
+    dateEl.textContent="無法連線，使用最近價格";
+  }
+  calc();
+}
+
+const data92=[[1.51,45,44,1],[1.54,46,45,1],[1.57,47,46,1],[1.6,48,46,2],[1.61,48,47,1],[1.63,49,47,2],[1.64,49,48,1],[1.67,50,48,2],[1.68,50,49,1],[1.7,51,49,2],[1.71,51,50,1],[1.74,52,50,2],[1.75,52,51,1],[1.77,53,51,2],[1.78,53,52,1],[1.81,54,52,2],[1.84,55,53,2],[1.85,55,54,1],[1.88,56,55,1],[1.92,57,56,1],[1.95,58,57,1],[1.99,59,58,1],[2.02,60,59,1],[2.05,61,59,2],[2.08,62,60,2],[2.09,62,61,1],[2.12,63,61,2],[2.15,64,62,2],[2.16,64,63,1],[2.19,65,64,1],[2.22,66,64,2],[2.23,66,65,1],[2.26,67,66,1],[2.29,68,66,2],[2.3,67,65,2],[2.33,69,68,1],[2.36,70,68,2],[2.4,72,70,2],[2.43,72,70,2],[2.46,73,71,2],[2.47,74,72,2],[2.5,75,73,2],[2.53,75,73,2],[2.57,77,75,2],[2.59,81,78,3],[2.6,77,75,2],[2.62,77,74,3],[2.64,79,77,2],[2.67,80,77,3],[2.69,79,76,3],[2.71,81,79,2],[2.74,82,79,3],[2.76,81,78,3],[2.81,84,81,3],[2.84,85,82,3],[2.88,86,84,2],[2.95,88,86,2],[2.98,89,86,3],[3.02,90,88,2],[3.05,91,88,3],[3.12,93,90,3],[3.19,95,93,2],[3.26,97,95,2],[3.35,104,102,2],[3.5,104,102,2],[3.81,114,110,4]];
+const data95=[[1.51,47,46,1],[1.54,48,47,1],[1.57,49,48,1],[1.6,50,48,2],[1.61,50,49,1],[1.63,51,49,2],[1.64,51,50,1],[1.67,52,51,1],[1.7,53,52,1],[1.74,54,53,1],[1.77,55,54,1],[1.8,56,55,1],[1.84,57,56,1],[1.87,58,57,1],[1.9,59,58,1],[1.97,61,60,1],[2,62,61,1],[2.07,64,63,1],[2.1,65,64,1],[2.2,68,67,1],[2.23,69,68,1],[2.3,72,70,2],[2.33,72,71,1],[2.43,76,74,2],[2.46,77,75,2],[2.53,79,77,2],[2.56,80,78,2],[2.66,83,81,2],[2.69,84,82,2],[2.76,86,84,2],[2.79,87,85,2],[2.89,90,88,2],[2.99,93,91,2],[3.02,94,92,2],[3.12,97,95,2],[3.22,100,98,2],[3.35,104,102,2],[3.68,114,112,2],[4.01,125,122,3]];
+
+function calc(){
+  const d92=+document.getElementById("d92").value;
+  const d95=+document.getElementById("d95").value;
+  const list=[];
+  data92.forEach(v=>{const[l,f,s,od]=v;const ad=Math.min(od,d92);const real=(s*p92-ad)/l;list.push({oil:"92",l,full:f*p92,self:s*p92,disc:ad,real,save:f*p92-(s*p92-ad)})});
+  data95.forEach(v=>{const[l,f,s,od]=v;const ad=Math.min(od,d95);const real=(s*p95-ad)/l;list.push({oil:"95",l,full:f*p95,self:s*p95,disc:ad,real,save:f*p95-(s*p95-ad)})});
+  list.sort((a,b)=>a.real-b.real);
+  tbody.innerHTML="";
+  list.slice(0,20).forEach((x,i)=>{
+    const tr=document.createElement("tr");
+    if(i===0)tr.className="best";
+    tr.innerHTML=`<td><b>${i+1}</b></td>
+      <td><span class="oil${x.oil}"><b>${x.oil}</b></span></td>
+      <td><b>${x.l}</b></td>
+      <td>${x.full.toFixed(0)}</td>
+      <td>${x.self.toFixed(0)}</td>
+      <td>${x.disc}</td>
+      <td><b>${x.real.toFixed(2)}</b></td>
+      <td>${x.save.toFixed(0)}</td>`;
+    tbody.appendChild(tr);
+  });
+  lastEl.textContent="最後計算："+new Date().toLocaleString("zh-TW");
+}
+document.getElementById("d92").onchange=calc;
+document.getElementById("d95").onchange=calc;
+getPrice();
+setInterval(getPrice,86400000);
+</script>
+</body>
+</html>
