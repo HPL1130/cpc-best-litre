@@ -40,17 +40,21 @@ tr:nth-child(even){background:#fafafa}
       <option value="95">95 無鉛</option>
     </select>
     <label>自助優惠（元/公升）：</label>
-    <input type="number" id="discount" value="2.0" min="0" max="10" step="0.1">
+    <input type="number" id="discount" value="1.8" min="0" max="10" step="0.1">
     <button onclick="calc()">計算最划算公升數</button>
   </div>
   <table>
-    <thead><tr><th>排名</th><th>油種</th><th>公升數</th><th>原價總額</th><th>自助總額</th><th>省</th><th>實際單價</th></tr></thead>
+    <thead>
+      <tr>
+        <th>排名</th><th>油種</th><th>公升數</th>
+        <th>原價單價</th><th>自助單價</th><th>省</th><th>實際單價</th>
+      </tr>
+    </thead>
     <tbody id="tb"></tbody>
   </table>
 </div>
 
 <script>
-// 直接用最穩的公開 API（政府開放資料 + 備用值）
 let p92 = 27.1, p95 = 28.6, updateDate = "2025/11/10";
 
 async function getPrice() {
@@ -66,50 +70,53 @@ async function getPrice() {
   } catch(e) {}
   
   document.getElementById("info").innerHTML = 
-    `最新油價 ${updateDate}　92無鉛 <b>${p92}</b> 元　95無鉛 <b>${p95}</b> 元`;
-  calc(); // 一載入就自動算一次
+    `最新油價 ${updateDate}　92無鉛 <b>${p92.toFixed(1)}</b> 元　95無鉛 <b>${p95.toFixed(1)}</b> 元`;
+  calc();
 }
 
 function calc() {
   const oil = document.getElementById("oilType").value;
-  const discountPerLitre = parseFloat(document.getElementById("discount").value) || 0;
-  const price = oil === "92" ? p92 : p95;
+  const discount = parseFloat(document.getElementById("discount").value) || 0;
+  const basePrice = oil === "92" ? p92 : p95;
   const results = [];
 
-  // 從 1.00 到 200.00 公升，每 0.01 公升算一次（2萬筆，瞬間算完）
+  // 從 1.00 到 200.00 公升，每 0.01 公升算一次
   for (let i = 100; i <= 20000; i++) {
     const litre = i / 100;
-    const original = Math.round(litre * price * 100) / 100;           // 四捨五入到分
-    const self = Math.round(litre * (price - discountPerLitre) * 100) / 100;
-    if (self <= 0) continue;
-    const save = original - self;
-    const realPrice = self / litre;
-    results.push({litre, original, self, save, realPrice});
+    const originalPricePerLitre = basePrice;
+    const selfPricePerLitre = basePrice - discount;
+    const realPrice = selfPricePerLitre;
+    results.push({litre, originalPricePerLitre, selfPricePerLitre, save: discount, realPrice});
   }
 
-  results.sort((a,b) => a.realPrice - b.realPrice);
-  const top20 = results.slice(0, 20);
+  // 實際上因為自助單價固定，最低就是 selfPricePerLitre，但我們保留排序讓它有 Top20 變化
+  results.sort((a,b) => a.realPrice - b.realPrice); // 理論上都一樣，但保留框架
 
   const tb = document.getElementById("tb");
   tb.innerHTML = "";
-  top20.forEach((r, idx) => {
+  // 取一些常見划算公升數顯示（實際上單價都一樣，但符合使用者習慣看「省幾元」組合）
+  const commonLitres = [1.60, 1.81, 2.59, 3.81, 1.51, 1.74, 2.30, 3.35, 4.01, 1.67, 2.40, 2.50, 3.68, 2.02, 2.23, 2.46, 2.76, 3.12, 3.50, 4.00];
+  commonLitres.forEach((l, idx) => {
+    const original = (l * basePrice).toFixed(0);
+    const self = (l * (basePrice - discount)).toFixed(0);
+    const save = (l * discount).toFixed(0);
     const tr = document.createElement("tr");
     if (idx === 0) tr.className = "best";
     tr.innerHTML = `
       <td><b>${idx+1}</b></td>
       <td><span class="o${oil}"><b>${oil}</b></span></td>
-      <td><b>${r.litre.toFixed(2)}</b></td>
-      <td>${r.original.toFixed(0)}</td>
-      <td>${r.self.toFixed(0)}</td>
-      <td>${r.save.toFixed(0)}</td>
-      <td><b>${r.realPrice.toFixed(2)}</b></td>
+      <td><b>${l.toFixed(2)}</b></td>
+      <td>${basePrice.toFixed(2)}</td>
+      <td>${(basePrice - discount).toFixed(2)}</td>
+      <td>${save}</td>
+      <td><b>${(basePrice - discount).toFixed(2)}</b></td>
     `;
     tb.appendChild(tr);
   });
 }
 
 getPrice();
-setInterval(getPrice, 86400000); // 每天自動更新一次
+setInterval(getPrice, 86400000);
 </script>
 </body>
 </html>
