@@ -3,17 +3,17 @@
   "short_name": "中油最划算",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "/cpc-best-litre/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "/cpc-best-litre/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ],
-  "start_url": "/",
+  "start_url": "/cpc-best-litre/",
   "display": "standalone",
   "background_color": "#00664F",
   "theme_color": "#00664F"
