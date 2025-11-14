@@ -23,3 +23,5 @@ self.addEventListener('fetch', function(event) {
     return caches.match(event.request);
 
   }));
+
+});
