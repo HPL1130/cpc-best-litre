@@ -5,36 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>中油自助最划算公升數 Top20</title>
 <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b8a63"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,"Microsoft JhengHei",sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
-header{background:#00664F;color:#fff;padding:1.2rem;text-align:center}
-h1{font-size:1.5rem}
-.container{max-width:1000px;margin:0 auto;padding:1rem}
-.controls{background:#fff;padding:1.5rem;border-radius:16px;box-shadow:0 6px 25px rgba(0,0,0,.1);text-align:center;margin-bottom:1rem}
-label{font-weight:bold;margin:0 .5rem;font-size:1.1rem}
-select, input[type=number]{font-size:1.2rem;padding:.8rem 1.2rem;border-radius:12px;border:1px solid #ccc;margin:0 .5rem}
+:root{--green:#0b8a63;--light:#f7fff9;--accent:#ffd54a}
+body{font-family:-apple-system,"Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#f0fff6,#ffffff);color:#333;line-height:1.6;min-height:100vh}
+header{background:var(--green);color:#fff;padding:1.2rem;text-align:center;border-bottom-left-radius:18px;border-bottom-right-radius:18px;box-shadow:0 6px 20px rgba(11,138,99,.18);}
+h1{font-size:1.4rem;letter-spacing:0.4px}
+.container{max-width:1000px;margin:1rem auto;padding:1rem}
+.controls{background:#fff;padding:1.2rem;border-radius:16px;box-shadow:0 8px 30px rgba(11,138,99,.06);text-align:center;margin-bottom:1rem}
+label{font-weight:bold;margin:0 .5rem;font-size:1.05rem}
+select, input[type=number]{font-size:1.05rem;padding:.7rem 1rem;border-radius:12px;border:1px solid #e6f0ea;margin:0 .5rem;background:#fbfff9}
 input[type=number]{width:120px}
-button{padding:.9rem 2rem;border-radius:12px;background:#00664F;color:#fff;border:none;cursor:pointer;font-size:1.2rem;font-weight:bold}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 6px 25px rgba(0,0,0,.1);margin-top:1rem;font-size:1rem}
-th{background:#00664F;color:#fff;padding:1.2rem .5rem;font-size:1.1rem}
-td{padding:1rem .5rem;text-align:center}
-tr:nth-child(even){background:#fafafa}
-.best{background:#fff8e1!important;font-weight:bold;font-size:1.1rem}
-.o92{color:#d32f2f}
-.o95{color:#f57c00}
-#info{font-size:1rem;color:#555;margin:1rem 0;text-align:center}
+button{padding:.8rem 1.6rem;border-radius:12px;background:var(--green);color:#fff;border:none;cursor:pointer;font-size:1.05rem;font-weight:700}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.06);margin-top:1rem;font-size:1rem}
+th{background:linear-gradient(90deg,var(--green),#0a7b54);color:#fff;padding:1rem .5rem;font-size:1rem}
+td{padding:.9rem .5rem;text-align:center}
+tr:nth-child(even){background:#fbfff9}
+.best{background:linear-gradient(90deg,#fff7e0,#fffbea)!important;font-weight:700;font-size:1.03rem}
+.o92{color:#2d7a5a;font-weight:700}
+.o95{color:#296b8a;font-weight:700}
+#info{font-size:.95rem;color:#2f6b52;margin:0.6rem 0;text-align:center}
+.icon-preview{width:64px;height:64px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);display:inline-block;vertical-align:middle;margin-left:.6rem}
+.footer{font-size:.85rem;color:#666;text-align:center;margin:1rem 0}
 @media(max-width:640px){
-  select,input,button{width:90%;display:block;margin:.8rem auto}
-  th,td{font-size:.95rem;padding:.7rem .3rem}
+  select,input,button{width:90%;display:block;margin:.6rem auto}
+  th,td{font-size:.95rem;padding:.6rem .3rem}
 }
 </style>
 </head>
 <body>
-<header><h1>中油自助最划算公升數 Top20</h1></header>
+<header>
+  <h1>中油自助最划算公升數 Top20</h1>
+</header>
 <div class="container">
   <div class="controls">
-    <div id="info">正在取得最新油價…</div><br>
+    <div id="info">正在取得最新油價… <img class="icon-preview" src="icons/icon-192.png" alt="icon"></div><br>
     <label>油種：</label>
     <select id="oilType">
       <option value="92">92 無鉛</option>
@@ -42,17 +48,18 @@ tr:nth-child(even){background:#fafafa}
     </select>
     <label>自助優惠（元/公升）：</label>
     <input type="number" id="discount" value="1.8" min="0" max="10" step="0.1">
-    <button onclick="calc()">計算最划算公升數</button>
+    <button id="calcBtn">計算最划算公升數</button>
   </div>
   <table>
     <thead>
       <tr>
         <th>排名</th><th>油種</th><th>公升數</th>
-        <th>原價單價</th><th>自助單價</th><th>省</th><th>實際單價</th>
+        <th>原價單價</th><th>自助單價</th><th>省（元）</th><th>實際單價</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
   </table>
+  <div class="footer">提示：計算以「付款金額四捨五入到整元」後再除以公升數，找出「實際單價最低」的 Top20。</div>
 </div>
 
 <script>
@@ -68,10 +75,13 @@ async function getPrice() {
       p95 = parseFloat(item.price95) || p95;
       updateDate = item.date || updateDate;
     }
-  } catch(e) {}
+  } catch(e) {
+    console.warn('無法取得線上油價，採用預設值', e);
+  }
   
   document.getElementById("info").innerHTML = 
-    `最新油價 ${updateDate}　92無鉛 <b>${p92.toFixed(1)}</b> 元　95無鉛 <b>${p95.toFixed(1)}</b> 元`;
+    `最新油價 ${updateDate}　92無鉛 <b>${p92.toFixed(2)}</b> 元　95無鉛 <b>${p95.toFixed(2)}</b> 元
+     <img class="icon-preview" src="icons/icon-192.png" alt="icon">`;
   calc();
 }
 
@@ -79,46 +89,65 @@ function calc() {
   const oil = document.getElementById("oilType").value;
   const discount = parseFloat(document.getElementById("discount").value) || 0;
   const basePrice = oil === "92" ? p92 : p95;
+
   const results = [];
 
-  // 從 1.00 到 200.00 公升，每 0.01 公升算一次
-  for (let i = 100; i <= 20000; i++) {
-    const litre = i / 100;
-    const originalPricePerLitre = basePrice;
-    const selfPricePerLitre = basePrice - discount;
-    const realPrice = selfPricePerLitre;
-    results.push({litre, originalPricePerLitre, selfPricePerLitre, save: discount, realPrice});
+  // 1.00 ~ 20.00 公升，每 0.01 公升
+  for (let i = 100; i <= 2000; i++) {
+    const L = i / 100;
+
+    const selfUnit = basePrice - discount;               // 自助單價
+    const raw = selfUnit * L;                            // 理論金額
+    const pay = Math.round(raw);                         // 付款金額 (四捨五入到整元)
+    const realUnit = pay / L;                            // 實際單價
+    const originalPay = Math.round(basePrice * L);
+    const save = originalPay - pay;
+
+    results.push({
+      L,
+      originalUnit: basePrice,
+      selfUnit,
+      save,
+      realUnit
+    });
   }
 
-  // 實際上因為自助單價固定，最低就是 selfPricePerLitre，但我們保留排序讓它有 Top20 變化
-  results.sort((a,b) => a.realPrice - b.realPrice); // 理論上都一樣，但保留框架
+  // 按實際單價排序
+  results.sort((a, b) => a.realUnit - b.realUnit);
+
+  // Top 20
+  const top20 = results.slice(0, 20);
 
   const tb = document.getElementById("tb");
   tb.innerHTML = "";
-  // 取一些常見划算公升數顯示（實際上單價都一樣，但符合使用者習慣看「省幾元」組合）
-  const commonLitres = [1.60, 1.81, 2.59, 3.81, 1.51, 1.74, 2.30, 3.35, 4.01, 1.67, 2.40, 2.50, 3.68, 2.02, 2.23, 2.46, 2.76, 3.12, 3.50, 4.00];
-  commonLitres.forEach((l, idx) => {
-    const original = (l * basePrice).toFixed(0);
-    const self = (l * (basePrice - discount)).toFixed(0);
-    const save = (l * discount).toFixed(0);
+
+  top20.forEach((r, idx) => {
     const tr = document.createElement("tr");
     if (idx === 0) tr.className = "best";
+
     tr.innerHTML = `
       <td><b>${idx+1}</b></td>
-      <td><span class="o${oil}"><b>${oil}</b></span></td>
-      <td><b>${l.toFixed(2)}</b></td>
-      <td>${basePrice.toFixed(2)}</td>
-      <td>${(basePrice - discount).toFixed(2)}</td>
-      <td>${save}</td>
-      <td><b>${(basePrice - discount).toFixed(2)}</b></td>
+      <td><span class="o${document.getElementById("oilType").value}"><b>${document.getElementById("oilType").value}</b></span></td>
+      <td><b>${r.L.toFixed(2)}</b></td>
+      <td>${r.originalUnit.toFixed(2)}</td>
+      <td>${r.selfUnit.toFixed(2)}</td>
+      <td>${r.save}</td>
+      <td><b>${r.realUnit.toFixed(2)}</b></td>
     `;
+
     tb.appendChild(tr);
   });
 }
 
+document.getElementById('calcBtn').addEventListener('click', calc);
+
 getPrice();
 setInterval(getPrice, 86400000);
+
+// PWA: register service worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js').catch((e)=>console.warn('SW register failed', e));
+}
 </script>
 </body>
 </html>
-

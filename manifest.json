@@ -1,18 +1,18 @@
 {
-  "name": "中油自助最划算公升數",
-  "short_name": "中油最划算",
-  "start_url": ".",
+  "name": "中油自助最划算公升數 Top20",
+  "short_name": "油價Top20",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#00664F",
-  "theme_color": "#00664F",
+  "background_color": "#ffffff",
+  "theme_color": "#0b8a63",
   "icons": [
     {
-      "src": "icon-192.png",
+      "src": "icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icon-512.png",
+      "src": "icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
