@@ -60,6 +60,8 @@ tr:nth-child(even){background:#fbfff9}
     <tbody id="tb"></tbody>
   </table>
   <div class="footer">提示：計算以「付款金額四捨五入到整元」後再除以公升數，找出「實際單價最低」的 Top20。</div>
+  <div class="update" id="last">最後更新：--</div>
+</div>
 </div>
 
 <script>
@@ -69,6 +71,7 @@ async function getPrice() {
   try {
     const res = await fetch("https://apis.youbike.com.tw/api/front/gas-price");
     const data = await res.json();
+    const lastEl=document.getElementById("last");
     if (data?.list?.length > 0) {
       const item = data.list[0];
       p92 = parseFloat(item.price92) || p92;
@@ -137,6 +140,7 @@ function calc() {
 
     tb.appendChild(tr);
   });
+  lastEl.textContent="最後計算："+new Date().toLocaleString("zh-TW");
 }
 
 document.getElementById('calcBtn').addEventListener('click', calc);
