@@ -78,6 +78,7 @@ async function getPrice() {
       p95 = parseFloat(item.price95) || p95;
       updateDate = item.date || updateDate;
     }
+    lastEl.textContent = "最後更新：" + updateDate; 
   } catch(e) {
     console.warn('無法取得線上油價，採用預設值', e);
   }
@@ -140,7 +141,6 @@ function calc() {
 
     tb.appendChild(tr);
   });
-  lastEl.textContent="最後計算："+new Date().toLocaleString("zh-TW");
 }
 
 document.getElementById('calcBtn').addEventListener('click', calc);
