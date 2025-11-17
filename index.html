@@ -361,6 +361,29 @@ function calc() {
       oilType
     });
   }
+  results.sort((a, b) => {
+    const diff = a.realUnit - b.realUnit;
+    if (diff !== 0) return diff;
+    return a.L - b.L;
+  });
+  const top20 = results.slice(0, 20);
+  const tb = document.getElementById('tb');
+  tb.innerHTML = '';
+  top20.forEach((r, idx) => {
+    const tr = document.createElement('tr');
+    if (idx === 0) tr.className = 'best';
+    tr.innerHTML = `
+      <td><b>${idx + 1}</b></td>
+      <td><span class="o${oilType}"><b>${oilType}</b></span></td>
+      <td><b>${r.L.toFixed(2)}</b></td>
+      <td>${r.originalUnit.toFixed(2)}</td>
+      <td>${r.selfUnit.toFixed(2)}</td>
+      <td>${r.save}</td>
+      <td><b>${r.realUnit.toFixed(2)}</b></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
   // 多條件排序：先比較實際單價 realUnit，若相同比較公升數 L
   results.sort((a, b) => {
     if (a.realUnit < b.realUnit) return -1;
