@@ -1,136 +1,256 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>中油自助最划算公升數 Top20</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0b8a63"/>
+<link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0b8a63" />
 <style>
-:root{
-  --green:#0b8a63;
-  --light:#f7fff9;
-  --accent:#ffd54a
+:root {
+  --green: #0b8a63;
+  --light: #f7fff9;
+  --accent: #ffd54a;
+  --bg-light: #f0fff6;
+  --bg-dark: #222;
+  --text-light: #333;
+  --text-dark: #ddd;
+  --bg-control-light: #fff;
+  --bg-control-dark: #333;
 }
-body{
-  font-family:-apple-system,"Microsoft JhengHei",sans-serif;
-  background:linear-gradient(180deg,#f0fff6,#fff);
-  color:#333;line-height:1.6;min-height:100vh
+body {
+  font-family: -apple-system, "Microsoft JhengHei", sans-serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  line-height: 1.6;
+  min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
 }
-header{
-  background:var(--green);
-  color:#fff;
-  padding:1.2rem;
-  text-align:center;
-  border-bottom-left-radius:18px;
-  border-bottom-right-radius:18px;
-  box-shadow:0 6px 20px rgba(11,138,99,.18);
+body.dark {
+  background: var(--bg-dark);
+  color: var(--text-dark);
 }
-h1{font-size:1.4rem;letter-spacing:0.4px}
-.container{max-width:1000px;margin:1rem auto;padding:1rem}
-.gas-info-bar{
-  display:flex;
-  align-items:center;
-  justify-content:flex-start;
-  background:#fff;
-  padding:1rem;
-  border-radius:16px;
-  box-shadow:0 8px 30px rgba(11,138,99,.07);
-  margin-bottom:0.4rem;
-  gap:1.2rem;
+header {
+  background: var(--green);
+  color: #fff;
+  padding: 1.2rem;
+  text-align: center;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+  box-shadow: 0 6px 20px rgba(11, 138, 99, 0.18);
 }
-.gas-logo{
-  width:56px;height:56px;
-  border-radius:12px;
-  box-shadow:0 8px 20px rgba(0,0,0,.08);
-  background:#f8fff0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin-right:0.6rem;
-  flex-shrink:0;
+h1 {
+  font-size: 1.4rem;
+  letter-spacing: 0.4px;
 }
-.gas-detail{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  min-width:0;
+.container {
+  max-width: 1000px;
+  margin: 1rem auto;
+  padding: 1rem;
 }
-.info-date{
-  color:#176742;
-  font-size:1.05rem;
+.gas-info-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: var(--bg-control-light);
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(11, 138, 99, 0.07);
+  margin-bottom: 0.4rem;
+  gap: 1.2rem;
+  transition: background-color 0.3s;
 }
-.info-prices{
-  color:#296b8a;
-  font-size:1.1rem;
-  margin-top:0.4rem;
-  display:flex;gap:2.8rem
+body.dark .gas-info-bar {
+  background: var(--bg-control-dark);
 }
-.info-prices b{color:#0b8a63;font-size:1.15rem;}
-.controls-bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:1.5rem;
-  margin:1rem 0 0.6rem 0;
-  padding:1rem 1.2rem;
-  background:#fff;
-  border-radius:16px;
-  box-shadow:0 8px 30px rgba(11,138,99,.05);
-  flex-wrap:wrap;
+.gas-logo {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  background: #f8fff0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.6rem;
+  flex-shrink: 0;
 }
-.control-group{
-  display:flex;align-items:center;
-  gap:0.5rem;
+.gas-detail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
-button{
-  padding:.7rem 1.4rem;
-  border-radius:12px;
-  background:var(--green);
-  color:#fff;
-  border:none;
-  cursor:pointer;
-  font-size:1.05rem;
-  font-weight:700;
-  margin-left:1rem;
+.info-date {
+  color: #176742;
+  font-size: 1.05rem;
 }
-select,input[type=number]{
-  font-size:1.05rem;
-  padding:.55rem .9rem;
-  border-radius:12px;
-  border:1px solid #e6f0ea;
-  background:#fbfff9;
+.info-prices {
+  color: #296b8a;
+  font-size: 1.1rem;
+  margin-top: 0.4rem;
+  display: flex;
+  gap: 2.8rem;
 }
-input[type=number]{width:90px}
-table{
-  width:100%;
-  border-collapse:collapse;
-  background:#fff;
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 8px 30px rgba(0,0,0,.06);
-  margin-top:1rem;
-  font-size:1rem
+.info-prices b {
+  color: #0b8a63;
+  font-size: 1.15rem;
 }
-th{
-  background:linear-gradient(90deg,var(--green),#0a7b54);
-  color:#fff;
-  padding:1rem .5rem;
-  font-size:1rem
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin: 1rem 0 0.6rem 0;
+  padding: 1rem 1.2rem;
+  background: var(--bg-control-light);
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(11, 138, 99, 0.05);
+  flex-wrap: wrap;
+  transition: background-color 0.3s;
 }
-td{padding:.9rem .5rem;text-align:center}
-tr:nth-child(even){background:#fbfff9}
-.best{background:linear-gradient(90deg,#fff7e0,#fffbea)!important;font-weight:700;font-size:1.03rem}
-.o92{color:#2d7a5a;font-weight:700}
-.o95{color:#296b8a;font-weight:700}
-.footer{font-size:.85rem;color:#666;text-align:center;margin:1rem 0}
-.update{font-size:.90rem;text-align:center;color:#1b553b;margin-top:.8rem;}
-@media(max-width:640px){
-  .container{padding:0.2rem;}
-  .gas-info-bar{flex-direction:column;align-items:flex-start;gap:0.5rem}
-  .controls-bar{flex-direction:column;align-items:stretch}
-  .info-prices{gap:1.2rem;}
-  button{margin:1rem 0 0 0}
+body.dark .controls-bar {
+  background: var(--bg-control-dark);
+}
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+button {
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  background: var(--green);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-left: 1rem;
+  transition: background-color 0.3s;
+}
+button:hover {
+  background: #0a7b54;
+}
+select,
+input[type='number'] {
+  font-size: 1.05rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid #e6f0ea;
+  background: #fbfff9;
+}
+input[type='number'] {
+  width: 90px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-control-light);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  margin-top: 1rem;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+body.dark table {
+  background: var(--bg-control-dark);
+}
+th {
+  background: linear-gradient(90deg, var(--green), #0a7b54);
+  color: #fff;
+  padding: 1rem 0.5rem;
+  font-size: 1rem;
+}
+td {
+  padding: 0.9rem 0.5rem;
+  text-align: center;
+  color: inherit;
+}
+tr:nth-child(even) {
+  background: #fbfff9;
+}
+body.dark tr:nth-child(even) {
+  background: #444;
+}
+.best {
+  background: linear-gradient(90deg, #fff7e0, #fffbea) !important;
+  font-weight: 700;
+  font-size: 1.03rem;
+}
+.o92 {
+  color: #2d7a5a;
+  font-weight: 700;
+}
+.o95 {
+  color: #296b8a;
+  font-weight: 700;
+}
+.footer {
+  font-size: 0.85rem;
+  color: #666;
+  text-align: center;
+  margin: 1rem 0;
+}
+.update {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #1b553b;
+  margin-top: 0.8rem;
+}
+.error-msg {
+  color: #c00;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+.control-quick-discount button {
+  padding: 0.45rem 0.8rem;
+  font-size: 0.9rem;
+  margin: 0 0.3rem;
+  background: #0b8a63;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.control-quick-discount button:hover {
+  background: #074929;
+}
+.dark-mode-toggle {
+  background: #444;
+  padding: 5px 10px;
+  margin-left: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  user-select: none;
+  transition: background-color 0.3s;
+}
+.dark-mode-toggle:hover {
+  background: #222;
+}
+@media (max-width: 640px) {
+  .container {
+    padding: 0.2rem;
+  }
+  .gas-info-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .controls-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .info-prices {
+    gap: 1.2rem;
+  }
+  button {
+    margin: 1rem 0 0 0;
+  }
 }
 </style>
 </head>
@@ -139,51 +259,96 @@ tr:nth-child(even){background:#fbfff9}
   <h1>中油自助最划算公升數 Top20</h1>
 </header>
 <div class="container">
-  <div class="gas-info-bar">
+  <div class="gas-info-bar" aria-label="油價資訊區塊">
     <div class="gas-logo">
-      <img src="icons/icon-192.png" alt="logo" style="width:40px;height:40px;">
+      <img src="icons/icon-192.png" alt="中油LOGO" style="width:40px; height:40px;" />
     </div>
-    <div class="gas-detail">
-      <div class="info-date" id="info-date">最新油價 --</div>
-      <div class="info-prices"><span id="info-p92">92無鉛 -- 元</span><span id="info-p95">95無鉛 -- 元</span></div>
+    <div class="gas-detail" role="region" aria-live="polite">
+      <div class="info-date" id="info-date" aria-label="最新油價日期">最新油價 --</div>
+      <div class="info-prices">
+        <span id="info-p92" aria-label="92無鉛價格">92無鉛 -- 元</span>
+        <span id="info-p95" aria-label="95無鉛價格">95無鉛 -- 元</span>
+      </div>
     </div>
   </div>
   <div class="controls-bar">
     <div class="control-group">
       <label for="oilType">油種：</label>
-      <select id="oilType">
+      <select id="oilType" aria-label="選擇油種">
         <option value="92">92 無鉛</option>
         <option value="95">95 無鉛</option>
       </select>
     </div>
-    <div class="control-group">
+    <div class="control-group control-quick-discount" aria-label="快速自助優惠選擇">
       <label for="discount">自助優惠（元/公升）：</label>
-      <input type="number" id="discount" value="1.8" min="0" max="10" step="0.1">
+      <input
+        type="number"
+        id="discount"
+        value="1.8"
+        min="0"
+        max="10"
+        step="0.1"
+        aria-label="輸入自助優惠價格"
+      />
+      <button type="button" data-value="1.5">1.5</button>
+      <button type="button" data-value="1.8">1.8</button>
+      <button type="button" data-value="2.0">2.0</button>
     </div>
-    <button id="calcBtn">計算最划算公升數</button>
+    <button id="calcBtn" aria-label="計算最划算公升數">計算最划算公升數</button>
+    <button id="exportBtn" aria-label="匯出表格資料CSV">匯出表格CSV</button>
+    <button id="darkToggle" class="dark-mode-toggle" aria-pressed="false" aria-label="切換深色模式">深色模式</button>
   </div>
-  <table>
+  <canvas id="priceChart" style="max-width: 100%; margin-top: 1rem;"></canvas>
+  <table aria-label="油價計算結果表格">
     <thead>
       <tr>
-        <th>排名</th><th>油種</th><th>公升數</th>
-        <th>原價單價</th><th>自助單價</th><th>省（元）</th><th>實際單價</th>
+        <th>排名</th>
+        <th>油種</th>
+        <th>公升數</th>
+        <th>原價單價</th>
+        <th>自助單價</th>
+        <th>省（元）</th>
+        <th>實際單價</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
   </table>
-  <div class="footer">提示：計算以「付款金額四捨五入到整元」後再除以公升數，找出「實際單價最低」的 Top20。</div>
+  <div class="footer">
+    提示：計算以「付款金額四捨五入到整元」後再除以公升數，找出「實際單價最低」的 Top20。
+  </div>
   <div class="update" id="last">最後更新：--</div>
+  <div class="error-msg" id="errorMsg" role="alert" aria-live="assertive"></div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-let p92 = 27.1, p95 = 28.6, updateDate = "2025/11/10";
+let p92 = 27.1,
+  p95 = 28.6,
+  updateDate = '2025/11/10';
+const errorMsg = document.getElementById('errorMsg');
+
 function updateLastTime() {
-  document.getElementById("last").textContent =
-    "最後更新：" + new Date().toLocaleString("zh-TW");
+  document.getElementById('last').textContent =
+    '最後更新：' + new Date().toLocaleString('zh-TW');
 }
+
+function saveSettings() {
+  localStorage.setItem('oilType', document.getElementById('oilType').value);
+  localStorage.setItem('discount', document.getElementById('discount').value);
+}
+
+function loadSettings() {
+  const oilTypeStored = localStorage.getItem('oilType');
+  const discountStored = localStorage.getItem('discount');
+  if (oilTypeStored) document.getElementById('oilType').value = oilTypeStored;
+  if (discountStored) document.getElementById('discount').value = discountStored;
+}
+
 async function getPrice() {
+  errorMsg.textContent = '';
   try {
-    const res = await fetch("https://apis.youbike.com.tw/api/front/gas-price");
+    const res = await fetch('https://apis.youbike.com.tw/api/front/gas-price');
+    if (!res.ok) throw new Error('API 無法取得資料');
     const data = await res.json();
     if (data?.list?.length > 0) {
       const item = data.list[0];
@@ -191,22 +356,78 @@ async function getPrice() {
       p95 = parseFloat(item.price95) || p95;
       updateDate = item.date || updateDate;
     }
-  } catch(e) {
-    console.warn('無法取得線上油價，採用預設值', e);
+  } catch (e) {
+    errorMsg.textContent = '[錯誤] 無法取得線上油價，請稍後再試。';
+    console.warn(e);
   }
-  document.getElementById("info-date").textContent =
-    `最新油價 ${updateDate}`;
-  document.getElementById("info-p92").innerHTML =
-    `92無鉛 <b>${p92.toFixed(2)}</b> 元`;
-  document.getElementById("info-p95").innerHTML =
-    `95無鉛 <b>${p95.toFixed(2)}</b> 元`;
+  document.getElementById('info-date').textContent = `最新油價 ${updateDate}`;
+  document.getElementById('info-p92').innerHTML = `92無鉛 <b>${p92.toFixed(2)}</b> 元`;
+  document.getElementById('info-p95').innerHTML = `95無鉛 <b>${p95.toFixed(2)}</b> 元`;
   calc();
   updateLastTime();
+  saveSettings();
 }
+
+function generateCSV(data) {
+  let csv = '排名,油種,公升數,原價單價,自助單價,省（元）,實際單價\n';
+  data.forEach((row, idx) => {
+    csv +=
+      `${idx + 1},${row.oilType},${row.L.toFixed(2)},${row.originalUnit.toFixed(2)},${row.selfUnit.toFixed(2)},${row.save},${row.realUnit.toFixed(2)}\n`;
+  });
+  return csv;
+}
+
+function downloadCSV(content, filename) {
+  const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.setAttribute('download', filename);
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+// Chart.js 物件
+let priceChart = null;
+
+function renderChart(data, oilType, discount) {
+  const labels = data.map(r => r.L.toFixed(2));
+  const realPrices = data.map(r => r.realUnit.toFixed(2));
+
+  const ctx = document.getElementById('priceChart').getContext('2d');
+  if (priceChart) {
+    priceChart.destroy();
+  }
+  priceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: `實際單價 (${oilType} 無鉛扣除優惠 ${discount} 元)`,
+        data: realPrices,
+        borderColor: 'rgba(75,192,192,1)',
+        tension: 0.3,
+        fill: false,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: '公升數 (L)' } },
+        y: { title: { display: true, text: '實際單價 (元)' }, beginAtZero: false }
+      }
+    }
+  });
+}
+
 function calc() {
-  const oil = document.getElementById("oilType").value;
-  const discount = parseFloat(document.getElementById("discount").value) || 0;
-  const basePrice = oil === "92" ? p92 : p95;
+  const oilType = document.getElementById('oilType').value;
+  const discount = parseFloat(document.getElementById('discount').value) || 0;
+  saveSettings();
+
+  const basePrice = oilType === '92' ? p92 : p95;
   const results = [];
   for (let i = 100; i <= 2000; i++) {
     const L = i / 100;
@@ -221,19 +442,20 @@ function calc() {
       originalUnit: basePrice,
       selfUnit,
       save,
-      realUnit
+      realUnit,
+      oilType
     });
   }
   results.sort((a, b) => a.realUnit - b.realUnit);
   const top20 = results.slice(0, 20);
-  const tb = document.getElementById("tb");
-  tb.innerHTML = "";
+  const tb = document.getElementById('tb');
+  tb.innerHTML = '';
   top20.forEach((r, idx) => {
-    const tr = document.createElement("tr");
-    if (idx === 0) tr.className = "best";
+    const tr = document.createElement('tr');
+    if (idx === 0) tr.className = 'best';
     tr.innerHTML = `
-      <td><b>${idx+1}</b></td>
-      <td><span class="o${document.getElementById("oilType").value}"><b>${document.getElementById("oilType").value}</b></span></td>
+      <td><b>${idx + 1}</b></td>
+      <td><span class="o${oilType}"><b>${oilType}</b></span></td>
       <td><b>${r.L.toFixed(2)}</b></td>
       <td>${r.originalUnit.toFixed(2)}</td>
       <td>${r.selfUnit.toFixed(2)}</td>
@@ -242,16 +464,73 @@ function calc() {
     `;
     tb.appendChild(tr);
   });
-}
-document.getElementById('calcBtn').addEventListener('click', function() {
-  calc();
+  renderChart(results, oilType, discount);
   updateLastTime();
-});
-getPrice();
-setInterval(getPrice, 86400000);
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js').catch((e)=>console.warn('SW register failed', e));
 }
+
+document.getElementById('calcBtn').addEventListener('click', () => {
+  calc();
+});
+
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const oilType = document.getElementById('oilType').value;
+  const discount = parseFloat(document.getElementById('discount').value) || 0;
+  const basePrice = oilType === '92' ? p92 : p95;
+  const results = [];
+  for (let i = 100; i <= 2000; i++) {
+    const L = i / 100;
+    const selfUnit = basePrice - discount;
+    const raw = selfUnit * L;
+    const pay = Math.round(raw);
+    const realUnit = pay / L;
+    const originalPay = Math.round(basePrice * L);
+    const save = originalPay - pay;
+    results.push({
+      L,
+      originalUnit: basePrice,
+      selfUnit,
+      save,
+      realUnit,
+      oilType
+    });
+  }
+  results.sort((a, b) => a.realUnit - b.realUnit);
+  const top20 = results.slice(0, 20);
+  const csv = generateCSV(top20);
+  downloadCSV(csv, '油價計算結果.csv');
+});
+
+document.querySelectorAll('.control-quick-discount button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('discount').value = btn.dataset.value;
+    calc();
+  });
+});
+
+document.getElementById('oilType').addEventListener('change', () => {
+  calc();
+});
+
+document.getElementById('darkToggle').addEventListener('click', () => {
+  const body = document.body;
+  body.classList.toggle('dark');
+  const pressed = body.classList.contains('dark');
+  document.getElementById('darkToggle').setAttribute('aria-pressed', pressed);
+  localStorage.setItem('darkMode', pressed ? 'true' : 'false');
+});
+
+// 載入設定
+window.onload = () => {
+  loadSettings();
+  const darkModeSet = localStorage.getItem('darkMode');
+  if (darkModeSet === 'true') {
+    document.body.classList.add('dark');
+    document.getElementById('darkToggle').setAttribute('aria-pressed', true);
+  }
+  getPrice();
+};
+// 自動每5分鐘重新抓取油價
+setInterval(getPrice, 300000);
 </script>
 </body>
 </html>
