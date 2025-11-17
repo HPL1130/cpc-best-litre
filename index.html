@@ -67,26 +67,31 @@ tr:nth-child(even){background:#fbfff9}
 <script>
 let p92 = 27.1, p95 = 28.6, updateDate = "2025/11/10";
 
+// 最下方僅顯示網頁更新時間
+function updateLastTime() {
+  document.getElementById("last").textContent =
+    "最後更新：" + new Date().toLocaleString("zh-TW");
+}
+
 async function getPrice() {
   try {
     const res = await fetch("https://apis.youbike.com.tw/api/front/gas-price");
     const data = await res.json();
-    const lastEl=document.getElementById("last");
     if (data?.list?.length > 0) {
       const item = data.list[0];
       p92 = parseFloat(item.price92) || p92;
       p95 = parseFloat(item.price95) || p95;
       updateDate = item.date || updateDate;
     }
-    lastEl.textContent = "最後更新：" + updateDate; 
   } catch(e) {
     console.warn('無法取得線上油價，採用預設值', e);
   }
-  
+
   document.getElementById("info").innerHTML = 
     `最新油價 ${updateDate}　92無鉛 <b>${p92.toFixed(2)}</b> 元　95無鉛 <b>${p95.toFixed(2)}</b> 元
      <img class="icon-preview" src="icons/icon-192.png" alt="icon">`;
   calc();
+  updateLastTime(); // 執行完計算後更新最下方時間
 }
 
 function calc() {
@@ -143,7 +148,10 @@ function calc() {
   });
 }
 
-document.getElementById('calcBtn').addEventListener('click', calc);
+document.getElementById('calcBtn').addEventListener('click', function() {
+  calc();
+  updateLastTime();
+});
 
 getPrice();
 setInterval(getPrice, 86400000);
