@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>中油自助最划算公升數 Top20</title>
@@ -298,7 +299,7 @@ body.dark tr:nth-child(even) {
     <button id="exportBtn" aria-label="匯出表格資料CSV">匯出表格CSV</button>
     <button id="darkToggle" class="dark-mode-toggle" aria-pressed="false" aria-label="切換深色模式">深色模式</button>
   </div>
-  <canvas id="priceChart" style="max-width: 100%; margin-top: 1rem;"></canvas>
+<canvas id="priceChart" width="400" height="220" style="display: block; max-width:100%; margin-top: 1rem;"></canvas>
   <table aria-label="油價計算結果表格">
     <thead>
       <tr>
