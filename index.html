@@ -344,6 +344,7 @@ function calc() {
 
   const basePrice = oilType === '92' ? p92 : p95;
   const results = [];
+
   for (let i = 100; i <= 2000; i++) {
     const L = i / 100;
     const selfUnit = basePrice - discount;
@@ -352,6 +353,7 @@ function calc() {
     const realUnit = pay / L;
     const originalPay = Math.round(basePrice * L);
     const save = originalPay - pay;
+
     results.push({
       L,
       originalUnit: basePrice,
@@ -361,15 +363,22 @@ function calc() {
       oilType
     });
   }
-  // 先排序實際單價，再次條件以公升數排序
+
   results.sort((a, b) => {
-    const diff = a.realUnit - b.realUnit;
-    if (diff !== 0) return diff;
-    return a.L - b.L;
+    // 先比較實際單價
+    let diff = a.realUnit - b.realUnit;
+    if (diff !== 0) {
+      return diff;
+    }
+    // 實際單價相同，依公升數比較
+    diff = a.L - b.L;
+    return diff;
   });
+
   const top20 = results.slice(0, 20);
   const tb = document.getElementById('tb');
   tb.innerHTML = '';
+
   top20.forEach((r, idx) => {
     const tr = document.createElement('tr');
     if (idx === 0) tr.className = 'best';
@@ -385,7 +394,6 @@ function calc() {
     tb.appendChild(tr);
   });
 }
-
 document.getElementById('calcBtn').addEventListener('click', () => {
   calc();
 });
