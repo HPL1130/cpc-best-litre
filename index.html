@@ -361,7 +361,14 @@ function calc() {
       oilType
     });
   }
-  results.sort((a, b) => a.realUnit - b.realUnit);
+  // 多條件排序：先比較實際單價 realUnit，若相同比較公升數 L
+  results.sort((a, b) => {
+    if (a.realUnit < b.realUnit) return -1;
+    if (a.realUnit > b.realUnit) return 1;
+    if (a.L < b.L) return -1;
+    if (a.L > b.L) return 1;
+    return 0;
+  });
   const top20 = results.slice(0, 20);
   const tb = document.getElementById('tb');
   tb.innerHTML = '';
@@ -407,7 +414,13 @@ document.getElementById('exportBtn').addEventListener('click', () => {
       oilType
     });
   }
-  results.sort((a, b) => a.realUnit - b.realUnit);
+  results.sort((a, b) => {
+    if (a.realUnit < b.realUnit) return -1;
+    if (a.realUnit > b.realUnit) return 1;
+    if (a.L < b.L) return -1;
+    if (a.L > b.L) return 1;
+    return 0;
+  });
   const top20 = results.slice(0, 20);
   const csv = generateCSV(top20);
   downloadCSV(csv, '油價計算結果.csv');
@@ -421,7 +434,6 @@ document.getElementById('darkToggle').addEventListener('click', () => {
   localStorage.setItem('darkMode', pressed ? 'true' : 'false');
 });
 
-// 載入設定
 window.onload = () => {
   loadSettings();
   const darkModeSet = localStorage.getItem('darkMode');
@@ -432,7 +444,6 @@ window.onload = () => {
   getPrice();
 };
 
-// 自動每5分鐘重新抓取油價
 setInterval(getPrice, 300000);
 </script>
 </body>
