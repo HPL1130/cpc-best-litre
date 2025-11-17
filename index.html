@@ -68,7 +68,7 @@ footer{text-align:center;padding:2rem;color:#888;font-size:.9rem}
 let p92=29.8,p95=31.1,date="";
 const tbody=document.getElementById("tbody");
 const dateEl=document.getElementById("date");
-const lastEl=document.getElementById("last"); // 確保抓取到 id="last" 元素
+const lastEl=document.getElementById("last");
 
 async function getPrice(){
   try{
@@ -111,7 +111,7 @@ function calc(){
       <td>${x.save.toFixed(0)}</td>`;
     tbody.appendChild(tr);
   });
-  // 核心修改：在每次計算完成後，更新頁面上的「最後計算」時間
+  // ***** 這是唯一修改/新增的行，用於顯示最後計算時間 *****
   lastEl.textContent="最後計算："+new Date().toLocaleString("zh-TW");
 }
 document.getElementById("d92").onchange=calc;
