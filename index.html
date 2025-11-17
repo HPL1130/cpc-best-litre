@@ -111,7 +111,7 @@ function calc(){
       <td>${x.save.toFixed(0)}</td>`;
     tbody.appendChild(tr);
   });
-  // ***** 這是唯一修改/新增的行，用於顯示最後計算時間 *****
+  // ***** 這是加入的程式碼，用於更新最後計算時間 *****
   lastEl.textContent="最後計算："+new Date().toLocaleString("zh-TW");
 }
 document.getElementById("d92").onchange=calc;
