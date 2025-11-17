@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>中油自助最划算公升數 Top20</title>
@@ -100,8 +99,8 @@ body.dark .gas-info-bar {
 .controls-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
+  justify-content: flex-start;
+  gap: 0.3rem; /* 縮小間距 */
   margin: 1rem 0 0.6rem 0;
   padding: 1rem 1.2rem;
   background: var(--bg-control-light);
@@ -127,7 +126,7 @@ button {
   cursor: pointer;
   font-size: 1.05rem;
   font-weight: 700;
-  margin-left: 1rem;
+  margin: 0; /* 取消左右 margin */
   transition: background-color 0.3s;
 }
 button:hover {
@@ -206,53 +205,6 @@ body.dark tr:nth-child(even) {
   margin-top: 0.5rem;
   text-align: center;
 }
-.control-quick-discount button {
-  padding: 0.45rem 0.8rem;
-  font-size: 0.9rem;
-  margin: 0 0.3rem;
-  background: #0b8a63;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-.control-quick-discount button:hover {
-  background: #074929;
-}
-.dark-mode-toggle {
-  background: #444;
-  padding: 5px 10px;
-  margin-left: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  color: white;
-  user-select: none;
-  transition: background-color 0.3s;
-}
-.dark-mode-toggle:hover {
-  background: #222;
-}
-@media (max-width: 640px) {
-  .container {
-    padding: 0.2rem;
-  }
-  .gas-info-bar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-  }
-  .controls-bar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .info-prices {
-    gap: 1.2rem;
-  }
-  button {
-    margin: 1rem 0 0 0;
-  }
-}
 </style>
 </head>
 <body>
@@ -280,7 +232,7 @@ body.dark tr:nth-child(even) {
         <option value="95">95 無鉛</option>
       </select>
     </div>
-    <div class="control-group control-quick-discount" aria-label="快速自助優惠選擇">
+    <div class="control-group">
       <label for="discount">自助優惠（元/公升）：</label>
       <input
         type="number"
@@ -291,15 +243,12 @@ body.dark tr:nth-child(even) {
         step="0.1"
         aria-label="輸入自助優惠價格"
       />
-      <button type="button" data-value="1.5">1.5</button>
-      <button type="button" data-value="1.8">1.8</button>
-      <button type="button" data-value="2.0">2.0</button>
     </div>
     <button id="calcBtn" aria-label="計算最划算公升數">計算最划算公升數</button>
     <button id="exportBtn" aria-label="匯出表格資料CSV">匯出表格CSV</button>
     <button id="darkToggle" class="dark-mode-toggle" aria-pressed="false" aria-label="切換深色模式">深色模式</button>
   </div>
-<canvas id="priceChart" style="max-width:100%;height:260px;margin-top:1rem;"></canvas>
+
   <table aria-label="油價計算結果表格">
     <thead>
       <tr>
@@ -321,7 +270,6 @@ body.dark tr:nth-child(even) {
   <div class="error-msg" id="errorMsg" role="alert" aria-live="assertive"></div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 let p92 = 27.1,
   p95 = 28.6,
@@ -389,40 +337,6 @@ function downloadCSV(content, filename) {
   document.body.removeChild(link);
 }
 
-// Chart.js 物件
-let priceChart = null;
-
-function renderChart(data, oilType, discount) {
-  const labels = data.map(r => r.L.toFixed(2));
-  const realPrices = data.map(r => r.realUnit.toFixed(2));
-
-  const ctx = document.getElementById('priceChart').getContext('2d');
-  if (priceChart) {
-    priceChart.destroy();
-  }
-  priceChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: `實際單價 (${oilType} 無鉛扣除優惠 ${discount} 元)`,
-        data: realPrices,
-        borderColor: 'rgba(75,192,192,1)',
-        tension: 0.3,
-        fill: false,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      scales: {
-        x: { title: { display: true, text: '公升數 (L)' } },
-        y: { title: { display: true, text: '實際單價 (元)' }, beginAtZero: false }
-      }
-    }
-  });
-}
-
 function calc() {
   const oilType = document.getElementById('oilType').value;
   const discount = parseFloat(document.getElementById('discount').value) || 0;
@@ -465,8 +379,6 @@ function calc() {
     `;
     tb.appendChild(tr);
   });
-  renderChart(results, oilType, discount);
-  updateLastTime();
 }
 
 document.getElementById('calcBtn').addEventListener('click', () => {
@@ -501,17 +413,6 @@ document.getElementById('exportBtn').addEventListener('click', () => {
   downloadCSV(csv, '油價計算結果.csv');
 });
 
-document.querySelectorAll('.control-quick-discount button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.getElementById('discount').value = btn.dataset.value;
-    calc();
-  });
-});
-
-document.getElementById('oilType').addEventListener('change', () => {
-  calc();
-});
-
 document.getElementById('darkToggle').addEventListener('click', () => {
   const body = document.body;
   body.classList.toggle('dark');
@@ -530,6 +431,7 @@ window.onload = () => {
   }
   getPrice();
 };
+
 // 自動每5分鐘重新抓取油價
 setInterval(getPrice, 300000);
 </script>
