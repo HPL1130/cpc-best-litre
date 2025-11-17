@@ -7,30 +7,130 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0b8a63"/>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root{--green:#0b8a63;--light:#f7fff9;--accent:#ffd54a}
-body{font-family:-apple-system,"Microsoft JhengHei",sans-serif;background:linear-gradient(180deg,#f0fff6,#ffffff);color:#333;line-height:1.6;min-height:100vh}
-header{background:var(--green);color:#fff;padding:1.2rem;text-align:center;border-bottom-left-radius:18px;border-bottom-right-radius:18px;box-shadow:0 6px 20px rgba(11,138,99,.18);}
+:root{
+  --green:#0b8a63;
+  --light:#f7fff9;
+  --accent:#ffd54a
+}
+body{
+  font-family:-apple-system,"Microsoft JhengHei",sans-serif;
+  background:linear-gradient(180deg,#f0fff6,#fff);
+  color:#333;line-height:1.6;min-height:100vh
+}
+header{
+  background:var(--green);
+  color:#fff;
+  padding:1.2rem;
+  text-align:center;
+  border-bottom-left-radius:18px;
+  border-bottom-right-radius:18px;
+  box-shadow:0 6px 20px rgba(11,138,99,.18);
+}
 h1{font-size:1.4rem;letter-spacing:0.4px}
 .container{max-width:1000px;margin:1rem auto;padding:1rem}
-.controls{background:#fff;padding:1.2rem;border-radius:16px;box-shadow:0 8px 30px rgba(11,138,99,.06);text-align:center;margin-bottom:1rem}
-label{font-weight:bold;margin:0 .5rem;font-size:1.05rem}
-select, input[type=number]{font-size:1.05rem;padding:.7rem 1rem;border-radius:12px;border:1px solid #e6f0ea;margin:0 .5rem;background:#fbfff9}
-input[type=number]{width:120px}
-button{padding:.8rem 1.6rem;border-radius:12px;background:var(--green);color:#fff;border:none;cursor:pointer;font-size:1.05rem;font-weight:700}
-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.06);margin-top:1rem;font-size:1rem}
-th{background:linear-gradient(90deg,var(--green),#0a7b54);color:#fff;padding:1rem .5rem;font-size:1rem}
+.gas-info-bar{
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  background:#fff;
+  padding:1rem;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(11,138,99,.07);
+  margin-bottom:0.4rem;
+  gap:1.2rem;
+}
+.gas-logo{
+  width:56px;height:56px;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+  background:#f8fff0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-right:0.6rem;
+  flex-shrink:0;
+}
+.gas-detail{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+}
+.info-date{
+  color:#176742;
+  font-size:1.05rem;
+}
+.info-prices{
+  color:#296b8a;
+  font-size:1.1rem;
+  margin-top:0.4rem;
+  display:flex;gap:2.8rem
+}
+.info-prices b{color:#0b8a63;font-size:1.15rem;}
+.controls-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:1.5rem;
+  margin:1rem 0 0.6rem 0;
+  padding:1rem 1.2rem;
+  background:#fff;
+  border-radius:16px;
+  box-shadow:0 8px 30px rgba(11,138,99,.05);
+  flex-wrap:wrap;
+}
+.control-group{
+  display:flex;align-items:center;
+  gap:0.5rem;
+}
+button{
+  padding:.7rem 1.4rem;
+  border-radius:12px;
+  background:var(--green);
+  color:#fff;
+  border:none;
+  cursor:pointer;
+  font-size:1.05rem;
+  font-weight:700;
+  margin-left:1rem;
+}
+select,input[type=number]{
+  font-size:1.05rem;
+  padding:.55rem .9rem;
+  border-radius:12px;
+  border:1px solid #e6f0ea;
+  background:#fbfff9;
+}
+input[type=number]{width:90px}
+table{
+  width:100%;
+  border-collapse:collapse;
+  background:#fff;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,.06);
+  margin-top:1rem;
+  font-size:1rem
+}
+th{
+  background:linear-gradient(90deg,var(--green),#0a7b54);
+  color:#fff;
+  padding:1rem .5rem;
+  font-size:1rem
+}
 td{padding:.9rem .5rem;text-align:center}
 tr:nth-child(even){background:#fbfff9}
 .best{background:linear-gradient(90deg,#fff7e0,#fffbea)!important;font-weight:700;font-size:1.03rem}
 .o92{color:#2d7a5a;font-weight:700}
 .o95{color:#296b8a;font-weight:700}
-#info{font-size:.95rem;color:#2f6b52;margin:0.6rem 0;text-align:center}
-.icon-preview{width:64px;height:64px;border-radius:12px;box-shadow:0 8px 20px rgba(0,0,0,.08);display:inline-block;vertical-align:middle;margin-left:.6rem}
 .footer{font-size:.85rem;color:#666;text-align:center;margin:1rem 0}
+.update{font-size:.90rem;text-align:center;color:#1b553b;margin-top:.8rem;}
 @media(max-width:640px){
-  select,input,button{width:90%;display:block;margin:.6rem auto}
-  th,td{font-size:.95rem;padding:.6rem .3rem}
+  .container{padding:0.2rem;}
+  .gas-info-bar{flex-direction:column;align-items:flex-start;gap:0.5rem}
+  .controls-bar{flex-direction:column;align-items:stretch}
+  .info-prices{gap:1.2rem;}
+  button{margin:1rem 0 0 0}
 }
 </style>
 </head>
@@ -39,15 +139,27 @@ tr:nth-child(even){background:#fbfff9}
   <h1>中油自助最划算公升數 Top20</h1>
 </header>
 <div class="container">
-  <div class="controls">
-    <div id="info">正在取得最新油價… <img class="icon-preview" src="icons/icon-192.png" alt="icon"></div><br>
-    <label>油種：</label>
-    <select id="oilType">
-      <option value="92">92 無鉛</option>
-      <option value="95">95 無鉛</option>
-    </select>
-    <label>自助優惠（元/公升）：</label>
-    <input type="number" id="discount" value="1.8" min="0" max="10" step="0.1">
+  <div class="gas-info-bar">
+    <div class="gas-logo">
+      <img src="icons/icon-192.png" alt="logo" style="width:40px;height:40px;">
+    </div>
+    <div class="gas-detail">
+      <div class="info-date" id="info-date">最新油價 --</div>
+      <div class="info-prices"><span id="info-p92">92無鉛 -- 元</span><span id="info-p95">95無鉛 -- 元</span></div>
+    </div>
+  </div>
+  <div class="controls-bar">
+    <div class="control-group">
+      <label for="oilType">油種：</label>
+      <select id="oilType">
+        <option value="92">92 無鉛</option>
+        <option value="95">95 無鉛</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label for="discount">自助優惠（元/公升）：</label>
+      <input type="number" id="discount" value="1.8" min="0" max="10" step="0.1">
+    </div>
     <button id="calcBtn">計算最划算公升數</button>
   </div>
   <table>
@@ -62,17 +174,13 @@ tr:nth-child(even){background:#fbfff9}
   <div class="footer">提示：計算以「付款金額四捨五入到整元」後再除以公升數，找出「實際單價最低」的 Top20。</div>
   <div class="update" id="last">最後更新：--</div>
 </div>
-</div>
 
 <script>
 let p92 = 27.1, p95 = 28.6, updateDate = "2025/11/10";
-
-// 最下方僅顯示網頁更新時間
 function updateLastTime() {
   document.getElementById("last").textContent =
     "最後更新：" + new Date().toLocaleString("zh-TW");
 }
-
 async function getPrice() {
   try {
     const res = await fetch("https://apis.youbike.com.tw/api/front/gas-price");
@@ -86,32 +194,28 @@ async function getPrice() {
   } catch(e) {
     console.warn('無法取得線上油價，採用預設值', e);
   }
-
-  document.getElementById("info").innerHTML = 
-    `最新油價 ${updateDate}　92無鉛 <b>${p92.toFixed(2)}</b> 元　95無鉛 <b>${p95.toFixed(2)}</b> 元
-     <img class="icon-preview" src="icons/icon-192.png" alt="icon">`;
+  document.getElementById("info-date").textContent =
+    `最新油價 ${updateDate}`;
+  document.getElementById("info-p92").innerHTML =
+    `92無鉛 <b>${p92.toFixed(2)}</b> 元`;
+  document.getElementById("info-p95").innerHTML =
+    `95無鉛 <b>${p95.toFixed(2)}</b> 元`;
   calc();
-  updateLastTime(); // 執行完計算後更新最下方時間
+  updateLastTime();
 }
-
 function calc() {
   const oil = document.getElementById("oilType").value;
   const discount = parseFloat(document.getElementById("discount").value) || 0;
   const basePrice = oil === "92" ? p92 : p95;
-
   const results = [];
-
-  // 1.00 ~ 20.00 公升，每 0.01 公升
   for (let i = 100; i <= 2000; i++) {
     const L = i / 100;
-
-    const selfUnit = basePrice - discount;               // 自助單價
-    const raw = selfUnit * L;                            // 理論金額
-    const pay = Math.round(raw);                         // 付款金額 (四捨五入到整元)
-    const realUnit = pay / L;                            // 實際單價
+    const selfUnit = basePrice - discount;
+    const raw = selfUnit * L;
+    const pay = Math.round(raw);
+    const realUnit = pay / L;
     const originalPay = Math.round(basePrice * L);
     const save = originalPay - pay;
-
     results.push({
       L,
       originalUnit: basePrice,
@@ -120,20 +224,13 @@ function calc() {
       realUnit
     });
   }
-
-  // 按實際單價排序
   results.sort((a, b) => a.realUnit - b.realUnit);
-
-  // Top 20
   const top20 = results.slice(0, 20);
-
   const tb = document.getElementById("tb");
   tb.innerHTML = "";
-
   top20.forEach((r, idx) => {
     const tr = document.createElement("tr");
     if (idx === 0) tr.className = "best";
-
     tr.innerHTML = `
       <td><b>${idx+1}</b></td>
       <td><span class="o${document.getElementById("oilType").value}"><b>${document.getElementById("oilType").value}</b></span></td>
@@ -143,20 +240,15 @@ function calc() {
       <td>${r.save}</td>
       <td><b>${r.realUnit.toFixed(2)}</b></td>
     `;
-
     tb.appendChild(tr);
   });
 }
-
 document.getElementById('calcBtn').addEventListener('click', function() {
   calc();
   updateLastTime();
 });
-
 getPrice();
 setInterval(getPrice, 86400000);
-
-// PWA: register service worker
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js').catch((e)=>console.warn('SW register failed', e));
 }
