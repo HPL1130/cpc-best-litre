@@ -364,21 +364,17 @@ function calc() {
     });
   }
 
+  // 先以四捨五入後的實際單價排序，若相同再以公升數排序
   results.sort((a, b) => {
-    // 先比較實際單價
-    let diff = a.realUnit - b.realUnit;
-    if (diff !== 0) {
-      return diff;
-    }
-    // 實際單價相同，依公升數比較
-    diff = a.L - b.L;
-    return diff;
+    const roundedA = Math.round(a.realUnit * 100);
+    const roundedB = Math.round(b.realUnit * 100);
+    if (roundedA !== roundedB) return roundedA - roundedB;
+    return a.L - b.L;
   });
 
   const top20 = results.slice(0, 20);
   const tb = document.getElementById('tb');
   tb.innerHTML = '';
-
   top20.forEach((r, idx) => {
     const tr = document.createElement('tr');
     if (idx === 0) tr.className = 'best';
